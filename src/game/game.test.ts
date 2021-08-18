@@ -64,4 +64,33 @@ describe('Game', () => {
       expect(newGame.nextPlayer).toBe(players[1]);
     });
   });
+
+  describe('validate', () => {
+    const players = Array.from(new Array(2), () => chance.guid());
+    const size = 3;
+
+    it('validates if a move is valid or not', () => {
+      const newGame = new Game({ size, players });
+
+      const x = 1;
+      const y = 1;
+
+      // before any move, everything is valid
+      expect(newGame.validate({ x, y, pin: Pin.Small })).toBe(true);
+      expect(newGame.validate({ x, y, pin: Pin.Medium })).toBe(true);
+      expect(newGame.validate({ x, y, pin: Pin.Large })).toBe(true);
+
+      // occupy
+      newGame.addMove({ x, y, pin: Pin.Small });
+
+      // small can't take small
+      expect(newGame.validate({ x, y, pin: Pin.Small })).toBe(false);
+
+      // medium can take small
+      expect(newGame.validate({ x, y, pin: Pin.Medium })).toBe(true);
+
+      // large can take small
+      expect(newGame.validate({ x, y, pin: Pin.Large })).toBe(true);
+    });
+  });
 });

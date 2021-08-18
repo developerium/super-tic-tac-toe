@@ -1,7 +1,7 @@
 export enum Pin {
   Small,
   Medium,
-  Big
+  Large
 }
 
 export interface Tile {

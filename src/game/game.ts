@@ -57,4 +57,13 @@ export class Game {
       this.playerIndex = 0;
     }
   }
+
+  validate({ x, y, pin }: AddMoveInput): boolean {
+    // if it's not occupied
+    if (!this.tiles[x][y]) {
+      return true;
+    }
+
+    return this.tiles[x][y].pin < pin;
+  }
 }
