@@ -12,7 +12,6 @@
   "rules": {
     "no-tabs": "error",
     "semi": "error",
-    "indent": ["error", 2],
-    "arrow-body-style": ["error", "always"]
+    "indent": ["error", 2]
   }
 }
