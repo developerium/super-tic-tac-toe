@@ -43,11 +43,25 @@ describe('Game', () => {
       const pin = Pin.Small;
       newGame.addMove({ x, y, pin });
 
-      expect(newGame.nextPlayer).toBe(players[0]);
       expect(newGame.getTiles()[x][y]).toStrictEqual({
         player: players[0],
         pin,
       });
+    });
+
+    it('rotates next player by adding moves', () => {
+      const newGame = new Game({ size, players });
+
+      expect(newGame.nextPlayer).toBe(players[0]);
+
+      newGame.addMove({ x: 0, y: 0, pin: Pin.Small });
+      expect(newGame.nextPlayer).toBe(players[1]);
+
+      newGame.addMove({ x: 1, y: 0, pin: Pin.Small });
+      expect(newGame.nextPlayer).toBe(players[0]);
+
+      newGame.addMove({ x: 2, y: 0, pin: Pin.Small });
+      expect(newGame.nextPlayer).toBe(players[1]);
     });
   });
 });

@@ -22,7 +22,7 @@ export class Game {
   private readonly players: string[];
   private playerIndex = 0;
   private tiles: TileRow[];
-  private history: History[] = []
+  private history: History[] = [];
 
   get playerCount(): number {
     return this.players.length;
@@ -46,7 +46,15 @@ export class Game {
 
     this.tiles[x][y] = { player, pin };
     this.history.push({ x, y, pin, player });
+
+    this.goToNextPlayer();
   }
 
+  goToNextPlayer(): void {
+    this.playerIndex++;
 
+    if (typeof this.players[this.playerIndex] === 'undefined') {
+      this.playerIndex = 0;
+    }
+  }
 }
