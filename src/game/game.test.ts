@@ -1,6 +1,6 @@
 import { Chance } from 'chance';
 import { Game } from './game';
-import { Pin } from './tile/tile';
+import { generateBySize, Pin } from './tile/tile';
 
 describe('Game', () => {
   const chance = Chance();
@@ -27,8 +27,32 @@ describe('Game', () => {
 
         expect(tiles.length).toBe(size);
         expect(tiles[0].length).toBe(size);
+        expect(tiles).toStrictEqual(generateBySize(size));
       }
     );
+
+    it('can create a game from custom tiles', () => {
+      const players = Array.from(new Array(2), () => chance.guid());
+      const size = 3;
+      const customTiles = [
+        [
+          {
+            player: players[0],
+            pin: Pin.Small,
+          },
+          null,
+          null,
+        ],
+        [null, null, null],
+        [null, { player: players[1], pin: Pin.Small }, null],
+      ];
+
+      const newGame = new Game({ size, players, tiles: customTiles });
+      const tiles = newGame.getTiles();
+
+      expect(tiles).not.toStrictEqual(generateBySize(size));
+      expect(tiles).toStrictEqual(customTiles);
+    });
   });
 
   describe('addMove', () => {
@@ -93,4 +117,27 @@ describe('Game', () => {
       expect(newGame.validate({ x, y, pin: Pin.Large })).toBe(true);
     });
   });
+
+  // describe('findWinner', () => {
+  //   const players = Array.from(new Array(2), () => chance.guid());
+  //   const size = 3;
+  //
+  //   it('can find out if we have a winner in horizontal tiles', () => {
+  //     const newGame = new Game({ size, players });
+  //     expect(newGame.findWinner()).toBeFalsy();
+  //
+  //   });
+  //
+  //   it('can find out if we have a winner in vertical tiles', () => {
+  //     const newGame = new Game({ size, players });
+  //
+  //   });
+  //
+  //   it('can find out if we have a winner in cross tiles', () => {
+  //     const newGame = new Game({ size, players });
+  //
+  //   });
+  //
+  //
+  // });
 });

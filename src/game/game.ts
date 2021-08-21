@@ -3,6 +3,7 @@ import { generateBySize, Pin, TileRow } from './tile/tile';
 interface GameConstructorInput {
   size: number;
   players: string[];
+  tiles?: TileRow[];
 }
 
 interface AddMoveInput {
@@ -32,9 +33,9 @@ export class Game {
     return this.players[this.playerIndex];
   }
 
-  constructor({ size, players }: GameConstructorInput) {
+  constructor({ size, players, tiles }: GameConstructorInput) {
     this.players = players;
-    this.tiles = generateBySize(size);
+    this.tiles = tiles || generateBySize(size);
   }
 
   getTiles(): TileRow[] {
@@ -59,11 +60,12 @@ export class Game {
   }
 
   validate({ x, y, pin }: AddMoveInput): boolean {
+    const oldPin = this.tiles[x][y]?.pin;
     // if it's not occupied
-    if (!this.tiles[x][y]) {
+    if (typeof oldPin === 'undefined') {
       return true;
     }
 
-    return this.tiles[x][y].pin < pin;
+    return oldPin < pin;
   }
 }
