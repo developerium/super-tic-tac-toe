@@ -1,4 +1,11 @@
-import { generateBySize, Pin, TileRow } from './tile/tile';
+import {
+  generateBySize,
+  Pin,
+  TileRow,
+  Location,
+  getWinner,
+  WinnerResult,
+} from './tile/tile';
 
 interface GameConstructorInput {
   size: number;
@@ -6,16 +13,11 @@ interface GameConstructorInput {
   tiles?: TileRow[];
 }
 
-interface AddMoveInput {
-  x: number;
-  y: number;
+interface MoveInput extends Location {
   pin: Pin;
 }
 
-interface History {
-  x: number;
-  y: number;
-  pin: Pin;
+interface History extends Location, MoveInput {
   player: string;
 }
 
@@ -42,7 +44,7 @@ export class Game {
     return this.tiles;
   }
 
-  addMove({ x, y, pin }: AddMoveInput): void {
+  createMove({ x, y, pin }: MoveInput): void {
     const player = this.nextPlayer;
 
     this.tiles[x][y] = { player, pin };
@@ -59,7 +61,7 @@ export class Game {
     }
   }
 
-  validate({ x, y, pin }: AddMoveInput): boolean {
+  validate({ x, y, pin }: MoveInput): boolean {
     const oldPin = this.tiles[x][y]?.pin;
     // if it's not occupied
     if (typeof oldPin === 'undefined') {
@@ -67,5 +69,9 @@ export class Game {
     }
 
     return oldPin < pin;
+  }
+
+  getWinner(): WinnerResult | null {
+    return getWinner(this.tiles);
   }
 }

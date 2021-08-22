@@ -1,6 +1,6 @@
 import { Chance } from 'chance';
 import { Game } from './game';
-import { generateBySize, Pin } from './tile/tile';
+import { generateBySize, Pin, TileRow } from './tile/tile';
 
 describe('Game', () => {
   const chance = Chance();
@@ -65,7 +65,7 @@ describe('Game', () => {
       const x = 0;
       const y = 0;
       const pin = Pin.Small;
-      newGame.addMove({ x, y, pin });
+      newGame.createMove({ x, y, pin });
 
       expect(newGame.getTiles()[x][y]).toStrictEqual({
         player: players[0],
@@ -78,13 +78,13 @@ describe('Game', () => {
 
       expect(newGame.nextPlayer).toBe(players[0]);
 
-      newGame.addMove({ x: 0, y: 0, pin: Pin.Small });
+      newGame.createMove({ x: 0, y: 0, pin: Pin.Small });
       expect(newGame.nextPlayer).toBe(players[1]);
 
-      newGame.addMove({ x: 1, y: 0, pin: Pin.Small });
+      newGame.createMove({ x: 1, y: 0, pin: Pin.Small });
       expect(newGame.nextPlayer).toBe(players[0]);
 
-      newGame.addMove({ x: 2, y: 0, pin: Pin.Small });
+      newGame.createMove({ x: 2, y: 0, pin: Pin.Small });
       expect(newGame.nextPlayer).toBe(players[1]);
     });
   });
@@ -105,7 +105,7 @@ describe('Game', () => {
       expect(newGame.validate({ x, y, pin: Pin.Large })).toBe(true);
 
       // occupy
-      newGame.addMove({ x, y, pin: Pin.Small });
+      newGame.createMove({ x, y, pin: Pin.Small });
 
       // small can't take small
       expect(newGame.validate({ x, y, pin: Pin.Small })).toBe(false);
@@ -117,27 +117,4 @@ describe('Game', () => {
       expect(newGame.validate({ x, y, pin: Pin.Large })).toBe(true);
     });
   });
-
-  // describe('findWinner', () => {
-  //   const players = Array.from(new Array(2), () => chance.guid());
-  //   const size = 3;
-  //
-  //   it('can find out if we have a winner in horizontal tiles', () => {
-  //     const newGame = new Game({ size, players });
-  //     expect(newGame.findWinner()).toBeFalsy();
-  //
-  //   });
-  //
-  //   it('can find out if we have a winner in vertical tiles', () => {
-  //     const newGame = new Game({ size, players });
-  //
-  //   });
-  //
-  //   it('can find out if we have a winner in cross tiles', () => {
-  //     const newGame = new Game({ size, players });
-  //
-  //   });
-  //
-  //
-  // });
 });
