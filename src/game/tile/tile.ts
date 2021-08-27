@@ -38,5 +38,15 @@ export const getWinningMoves = (size: number): LocationSet[] => {
     result.push(vertical);
   }
 
+  const diameter1: Location[] = [];
+  const diameter2: Location[] = [];
+  for (let i = 0; i < size; i++) {
+    diameter1.push({ x: i, y: i });
+    diameter2.push({ x: i, y: size - 1 - i });
+  }
+
+  result.push(diameter1);
+  result.push(diameter2);
+
   return result;
 };

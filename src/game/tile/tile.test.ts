@@ -37,23 +37,10 @@ describe('Tile', () => {
   });
 });
 
-// const expectedWinningMoves: LocationSet[] = [
-//   [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}],
-//   [{x: 1, y: 0}, {x: 1, y: 1}, {x: 1, y: 2}],
-//   [{x: 2, y: 0}, {x: 2, y: 1}, {x: 2, y: 2}],
-//
-//   [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}],
-//   [{x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1}],
-//   [{x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}],
-//
-//   [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}],
-//   [{x: 2, y: 2}, {x: 1, y: 1}, {x: 0, y: 0}],
-// ];
-
 describe('getWinningMoves', () => {
-  it('can generate horizontal winning moves for 3x3', () => {
-    const winningMoves: LocationSet[] = getWinningMoves(3);
+  const winningMoves: LocationSet[] = getWinningMoves(3);
 
+  it('can generate horizontal winning moves', () => {
     const horizontalSet1: LocationSet = [
       { x: 0, y: 0 },
       { x: 0, y: 1 },
@@ -75,9 +62,7 @@ describe('getWinningMoves', () => {
     expect(winningMoves).toContainEqual(horizontalSet3);
   });
 
-  it('can generate vertical winning moves for 3x3', () => {
-    const winningMoves: LocationSet[] = getWinningMoves(3);
-
+  it('can generate vertical winning moves', () => {
     const verticalSet1: LocationSet = [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -97,5 +82,21 @@ describe('getWinningMoves', () => {
     expect(winningMoves).toContainEqual(verticalSet1);
     expect(winningMoves).toContainEqual(verticalSet2);
     expect(winningMoves).toContainEqual(verticalSet3);
+  });
+
+  it('can generate cross winning moves', () => {
+    const diameterSet1: LocationSet = [
+      { x: 0, y: 0 },
+      { x: 1, y: 1 },
+      { x: 2, y: 2 },
+    ];
+    const diameterSet2: LocationSet = [
+      { x: 0, y: 2 },
+      { x: 1, y: 1 },
+      { x: 2, y: 0 },
+    ];
+
+    expect(winningMoves).toContainEqual(diameterSet1);
+    expect(winningMoves).toContainEqual(diameterSet2);
   });
 });
