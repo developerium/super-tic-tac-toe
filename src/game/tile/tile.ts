@@ -27,12 +27,15 @@ export const getWinningMoves = (size: number): LocationSet[] => {
 
   for (let i = 0; i < size; i++) {
     const horizontal: Location[] = [];
+    const vertical: Location[] = [];
 
     for (let j = 0; j < size; j++) {
       horizontal.push({ x: i, y: j });
+      vertical.push({ x: j, y: i });
     }
 
     result.push(horizontal);
+    result.push(vertical);
   }
 
   return result;

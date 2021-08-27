@@ -74,4 +74,28 @@ describe('getWinningMoves', () => {
     expect(winningMoves).toContainEqual(horizontalSet2);
     expect(winningMoves).toContainEqual(horizontalSet3);
   });
+
+  it('can generate vertical winning moves for 3x3', () => {
+    const winningMoves: LocationSet[] = getWinningMoves(3);
+
+    const verticalSet1: LocationSet = [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+    ];
+    const verticalSet2: LocationSet = [
+      { x: 0, y: 1 },
+      { x: 1, y: 1 },
+      { x: 2, y: 1 },
+    ];
+    const verticalSet3 = [
+      { x: 0, y: 2 },
+      { x: 1, y: 2 },
+      { x: 2, y: 2 },
+    ];
+
+    expect(winningMoves).toContainEqual(verticalSet1);
+    expect(winningMoves).toContainEqual(verticalSet2);
+    expect(winningMoves).toContainEqual(verticalSet3);
+  });
 });
