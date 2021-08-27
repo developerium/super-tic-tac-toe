@@ -1,11 +1,5 @@
-import {
-  generateBySize,
-  Pin,
-  TileRow,
-  Location,
-  getWinner,
-  WinnerResult,
-} from './tile/tile';
+import { generateBySize, Pin, TileRow, Location } from './tile/tile';
+import { WinDetector, WinnerResult } from './winner/win-detector';
 
 interface GameConstructorInput {
   size: number;
@@ -26,6 +20,7 @@ export class Game {
   private playerIndex = 0;
   private tiles: TileRow[];
   private history: History[] = [];
+  private winDetector: WinDetector;
 
   get playerCount(): number {
     return this.players.length;
@@ -38,6 +33,7 @@ export class Game {
   constructor({ size, players, tiles }: GameConstructorInput) {
     this.players = players;
     this.tiles = tiles || generateBySize(size);
+    this.winDetector = new WinDetector({ size });
   }
 
   getTiles(): TileRow[] {
@@ -72,6 +68,6 @@ export class Game {
   }
 
   getWinner(): WinnerResult | null {
-    return getWinner(this.tiles);
+    return this.winDetector.getWinner(this.tiles);
   }
 }
