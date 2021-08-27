@@ -1,4 +1,4 @@
-import { Location, TileRow } from '../tile/tile';
+import { Location, TileRow, getWinningMoves, LocationSet } from '../tile/tile';
 
 interface WinDetectorConstructorInput {
   size: number;
@@ -10,58 +10,42 @@ export interface WinnerResult {
 }
 
 export class WinDetector {
-  private size: number;
+  private readonly winningMoves: LocationSet[];
 
   constructor({ size }: WinDetectorConstructorInput) {
-    this.size = size;
+    this.winningMoves = getWinningMoves(size);
   }
 
   getWinner(tiles: TileRow[]): WinnerResult | null {
-    // const length = tiles.length;
-    // for (let i = 0; i < length; i++) {
-    //   const tileRow = tiles[i];
-    //
-    //   for (let j = 0; j < length; j++) {
-    //     const tile = tiles[i][j];
-    //   }
-    // }
+    for (const locationSet of this.winningMoves) {
+      let player = null;
 
-    return getWinnerHorizontally(tiles);
-  }
-}
-const getWinnerHorizontally = (tiles: TileRow[]): WinnerResult | null => {
-  const length = tiles.length;
+      for (const { x, y } of locationSet) {
+        const tilePlayer = tiles[x][y]?.player;
+        if (!tilePlayer) {
+          player = null;
+          break; // this set is missing a player
+        }
 
-  let player: string | null = null;
-  let locations: Location[] = [];
+        if (!player) {
+          player = tilePlayer;
+          continue;
+        }
 
-  for (let x = 0; x < length; x++) {
-    const firstTile = tiles[x][0];
-    const lastTile = tiles[x][length - 1];
-
-    if (!firstTile || !lastTile) {
-      continue;
-    }
-
-    player = firstTile.player;
-    locations.push({ x, y: 0 });
-
-    for (let y = 1; y < length; y++) {
-      const tile = tiles[x][y];
-
-      if (player !== tile?.player) {
-        player = null;
-        locations = [];
-        break;
+        if (player !== tilePlayer) {
+          player = null;
+          break; // different players
+        }
       }
 
-      locations.push({ x, y });
+      if (player) {
+        return {
+          player,
+          locations: locationSet,
+        };
+      }
     }
 
-    if (player) {
-      return { player, locations };
-    }
+    return null;
   }
-
-  return null;
-};
+}
