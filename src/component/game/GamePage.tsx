@@ -5,9 +5,16 @@ import { GameContext } from '../game-context/GameContext';
 import { PageLayout } from '../layout/PageLayout';
 import { TileRowFC } from './TileRowFC';
 import { PlayerAvatar } from './PlayerAvatar';
+import { PlayerPiece } from './PlayerPiece';
 
 const Content = styled.div`
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const TileContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,19 +48,30 @@ export const GamePage: FC = () => {
 
   return (
     <PageLayout title="TicTacToe">
-      <PlayerContent>
-        {players.map((player, index) => (
-          <PlayerAvatar
-            key={player.id}
-            selected={player.id === game?.nextPlayer}
-            player={player}
-          />
-        ))}
-      </PlayerContent>
       <Content>
-        {game.getTiles().map((tileRow, index) => (
-          <TileRowFC row={tileRow} x={index} key={index} />
-        ))}
+        <PlayerContent>
+          {players.map((player) => (
+            <PlayerAvatar
+              key={player.id}
+              selected={player.id === game?.nextPlayer}
+              player={player}
+            />
+          ))}
+        </PlayerContent>
+
+        <PlayerContent>
+          {players.map((player) =>
+            player.id === game?.nextPlayer ? (
+              <PlayerPiece key={player.id} player={player} />
+            ) : null
+          )}
+        </PlayerContent>
+
+        <TileContent>
+          {game.getTiles().map((tileRow, index) => (
+            <TileRowFC row={tileRow} x={index} key={index} />
+          ))}
+        </TileContent>
       </Content>
     </PageLayout>
   );
