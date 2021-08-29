@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'nes.css/css/nes.min.css';
 
-import './App.css';
 import { HomePage } from './component/home/HomePage';
 import { GamePage } from './component/game/GamePage';
 import { AboutMePage } from './component/about-me/AboutMePage';
 import { NotFoundPage } from './component/not-found/NotFoundPage';
+import { GameSettingPage } from './component/game-setting/GameSettingPage';
 
-function App() {
+const App: FC = () => {
   return (
     <Router>
       <Switch>
@@ -17,6 +17,9 @@ function App() {
         </Route>
         <Route path="/game">
           <GamePage />
+        </Route>
+        <Route path="/game-setting">
+          <GameSettingPage />
         </Route>
         <Route path="/" exact>
           <HomePage />
@@ -27,6 +30,6 @@ function App() {
       </Switch>
     </Router>
   );
-}
+};
 
 export default App;
