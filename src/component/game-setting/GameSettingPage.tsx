@@ -20,7 +20,7 @@ export const GameSettingPage: FC = () => {
 
   const onChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const { name, value } = event.target;
-    changeSetting(name, parseInt(value, 10));
+    changeSetting?.(name, parseInt(value, 10));
   };
 
   return (
