@@ -44,10 +44,9 @@ export const GamePage: FC = () => {
       <PlayerContent>
         {players.map((player, index) => (
           <PlayerAvatar
-            key={player}
-            index={index}
-            selected={player === game?.nextPlayer}
-            id={player}
+            key={player.id}
+            selected={player.id === game?.nextPlayer}
+            player={player}
           />
         ))}
       </PlayerContent>

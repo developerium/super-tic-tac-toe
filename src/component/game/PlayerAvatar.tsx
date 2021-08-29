@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-interface PlayerAvatarProps {
-  index: number;
-  selected: boolean;
-  id: string;
-}
+import { Player } from '../game-context/GameContext';
 
-const playerClasses = ['is-success', 'is-warning', 'is-error', 'is-primary', 'is-disabled'];
+interface PlayerAvatarProps {
+  selected: boolean;
+  player: Player;
+}
 
 interface ContainerProps {
   selected: boolean;
@@ -24,12 +23,8 @@ const Container = styled.div<ContainerProps>`
 
 const Icon = styled.span``;
 
-export const PlayerAvatar: FC<PlayerAvatarProps> = ({
-  index,
-  selected,
-  id,
-}) => (
+export const PlayerAvatar: FC<PlayerAvatarProps> = ({ selected, player }) => (
   <Container selected={selected}>
-    <Icon className={`nes-text ${playerClasses[index]}`}>P{index + 1}</Icon>
+    <Icon className={`nes-text ${player.cssClass}`}>P{player.index + 1}</Icon>
   </Container>
 );
