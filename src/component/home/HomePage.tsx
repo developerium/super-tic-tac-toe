@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { PageLayout } from '../layout/PageLayout';
 
-export const HomePage = () => (
-  <div>
-    <div className="nes-container is-dark with-title">
-      <p className="title">Super Tic Tak Toe</p>
-      <p>Welcome to our awesome game, tic tak toe on steroids!</p>
+const Content = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const Info = styled.div`
+  text-align: left;
+`;
+
+export const HomePage: FC = () => (
+  <PageLayout title="Super Tic Tak Toe">
+    <Content>
+      <Info>
+        <p>Welcome to</p>
+        <p>our awesome game of tic tak toe</p>
+        <p>on steroids!</p>
+      </Info>
 
       <Link to="/game" className="nes-btn is-primary">
         Play !
       </Link>
-    </div>
-  </div>
+    </Content>
+  </PageLayout>
 );
