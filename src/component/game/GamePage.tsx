@@ -1,5 +1,14 @@
 import React, { FC, useContext, useEffect } from 'react';
 import styled from 'styled-components';
+import {
+  BeforeCapture,
+  DragDropContext,
+  DragStart,
+  DragUpdate,
+  Droppable,
+  DropResult,
+  ResponderProvided,
+} from 'react-beautiful-dnd';
 
 import { GameContext } from '../game-context/GameContext';
 import { PageLayout } from '../layout/PageLayout';
@@ -46,32 +55,68 @@ export const GamePage: FC = () => {
     );
   }
 
+  const onBeforeCapture = (before: BeforeCapture) => {
+    console.log('onBeforeCapture', before);
+  };
+  const onBeforeDragStart = (initial: DragStart) => {
+    console.log('onBeforeDragStart', initial);
+  };
+  const onDragStart = (initial: DragStart, provided: ResponderProvided) => {
+    console.log('onDragStart', initial, provided);
+  };
+  const onDragUpdate = (initial: DragUpdate, provided: ResponderProvided) => {
+    console.log('onDragUpdate', initial, provided);
+  };
+  const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
+    console.log('onDragEnd', result, provided);
+  };
+
   return (
     <PageLayout title="TicTacToe">
       <Content>
-        <PlayerContent>
-          {players.map((player) => (
-            <PlayerAvatar
-              key={player.id}
-              selected={player.id === game?.nextPlayer}
-              player={player}
-            />
-          ))}
-        </PlayerContent>
+        <DragDropContext
+          onBeforeCapture={onBeforeCapture}
+          onBeforeDragStart={onBeforeDragStart}
+          onDragStart={onDragStart}
+          onDragUpdate={onDragUpdate}
+          onDragEnd={onDragEnd}
+        >
+          <PlayerContent>
+            {players.map((player) => (
+              <PlayerAvatar
+                key={player.id}
+                selected={player.id === game?.nextPlayer}
+                player={player}
+              />
+            ))}
+          </PlayerContent>
 
-        <PlayerContent>
-          {players.map((player) =>
-            player.id === game?.nextPlayer ? (
-              <PlayerPiece key={player.id} player={player} />
-            ) : null
-          )}
-        </PlayerContent>
+          <Droppable droppableId="droppable-1" type="PERSON">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                style={{
+                  backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey',
+                }}
+                {...provided.droppableProps}
+              >
+                <PlayerContent>
+                  {players.map((player) =>
+                    player.id === game?.nextPlayer ? (
+                      <PlayerPiece key={player.id} player={player} />
+                    ) : null
+                  )}
+                </PlayerContent>
+              </div>
+            )}
+          </Droppable>
 
-        <TileContent>
-          {game.getTiles().map((tileRow, index) => (
-            <TileRowFC row={tileRow} x={index} key={index} />
-          ))}
-        </TileContent>
+          <TileContent>
+            {game.getTiles().map((tileRow, index) => (
+              <TileRowFC row={tileRow} x={index} key={index} />
+            ))}
+          </TileContent>
+        </DragDropContext>
       </Content>
     </PageLayout>
   );
