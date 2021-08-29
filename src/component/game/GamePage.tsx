@@ -1,30 +1,20 @@
 import React, { FC, useContext, useEffect } from 'react';
+import styled from 'styled-components';
+
 import { GameContext } from '../game-context/GameContext';
 import { PageLayout } from '../layout/PageLayout';
-import { Tile, TileRow } from '../../game/tile/tile';
+import { TileRowFC } from './TileRowFC';
 
-interface TileRowProps {
-  row: TileRow;
-  x: number;
-}
-
-interface TileProps {
-  tile: Tile | null;
-  x: number;
-  y: number;
-}
-const TileFC: FC<TileProps> = ({ tile, y, x }) => <div>{x},{y}</div>;
-
-const TileRowFC: FC<TileRowProps> = ({ row, x }) => (
-  <div>
-    {row.map((tile, y) => (
-      <TileFC tile={tile} y={y} x={x} key={`${x}-${y}`} />
-    ))}
-  </div>
-);
+const Content = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const GamePage: FC = () => {
-  const { setting, game, newGame } = useContext(GameContext);
+  const { game, newGame } = useContext(GameContext);
 
   useEffect(() => {
     newGame?.();
@@ -33,16 +23,21 @@ export const GamePage: FC = () => {
   if (!game) {
     return (
       <PageLayout title="Loading ...">
-        <i className="nes-octocat animate" />
+        <div>
+          <div className="nes-octocat animate" />
+          Hi :)
+        </div>
       </PageLayout>
     );
   }
 
   return (
     <PageLayout title="TicTacToe">
-      {game.getTiles().map((tileRow, index) => (
-        <TileRowFC row={tileRow} x={index} key={index} />
-      ))}
+      <Content>
+        {game.getTiles().map((tileRow, index) => (
+          <TileRowFC row={tileRow} x={index} key={index} />
+        ))}
+      </Content>
     </PageLayout>
   );
 };
