@@ -1,7 +1,8 @@
-import React, { ChangeEventHandler, FC, useState } from 'react';
-import { PageLayout } from '../layout/PageLayout';
+import React, { ChangeEventHandler, FC, useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { PageLayout } from '../layout/PageLayout';
+import { GameContext } from '../game-context/GameContext';
 
 const Content = styled.div`
   height: 100%;
@@ -15,16 +16,11 @@ const SelectWrapper = styled.div`
 `;
 
 export const GameSettingPage: FC = () => {
-  const [form, setForm] = useState({
-    playerCount: 2,
-    gameSize: 3,
-  });
+  const { setting, changeSetting } = useContext(GameContext);
 
   const onChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
-    setForm({
-      ...form,
-      [event.target.name]: event.target.value,
-    });
+    const { name, value } = event.target;
+    changeSetting(name, parseInt(value, 10));
   };
 
   return (
@@ -39,7 +35,7 @@ export const GameSettingPage: FC = () => {
             id="playerCount"
             name="playerCount"
             onChange={onChange}
-            value={form.playerCount}
+            value={setting.playerCount}
           >
             <option value={2}>2 Players</option>
             <option value={3}>3 Players</option>
@@ -47,7 +43,6 @@ export const GameSettingPage: FC = () => {
           </select>
         </SelectWrapper>
 
-        
         <label htmlFor="gameSize">Game size:</label>
         <SelectWrapper className="nes-select">
           <select
@@ -55,16 +50,16 @@ export const GameSettingPage: FC = () => {
             id="gameSize"
             name="gameSize"
             onChange={onChange}
-            value={form.gameSize}
+            value={setting.gameSize}
           >
             <option value={3}>3x3</option>
             <option value={5}>5x5</option>
             <option value={9}>9x9</option>
           </select>
         </SelectWrapper>
-
       </Content>
-      <Link to="/game-setting" className="nes-btn is-primary">
+
+      <Link to="/game" className="nes-btn is-primary">
         Play !
       </Link>
     </PageLayout>
