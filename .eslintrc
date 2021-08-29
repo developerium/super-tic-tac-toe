@@ -13,7 +13,8 @@
   ],
   "rules": {
     "no-tabs": "error",
-    "semi": "error",
-    "indent": ["error", 2]
+    "semi": "warn",
+    "indent": ["warn", 2],
+    "react/prop-types": "off"
   }
 }
