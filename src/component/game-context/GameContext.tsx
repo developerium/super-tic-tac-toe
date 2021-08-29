@@ -9,6 +9,7 @@ interface IGameContext {
   changeSetting?: ChangeSetting;
   game: Game | null;
   newGame?: () => void;
+  players: string[];
 }
 
 const initialSetting = {
@@ -21,12 +22,16 @@ const initialState: IGameContext = {
     ...initialSetting,
   },
   game: null,
+  players: [],
 };
 
 export const GameContext = createContext(initialState);
 
 export const GameContextProvider: FC = ({ children }) => {
   const [setting, setSetting] = useState(initialSetting);
+  const [players, setPlayers] = useState<string[]>([]);
+  const [game, setGame] = useState<Game | null>(null);
+
   const changeSetting = useCallback<ChangeSetting>(
     (name, value) => {
       setSetting({
@@ -37,18 +42,26 @@ export const GameContextProvider: FC = ({ children }) => {
     [setting, setSetting]
   );
 
-  const [game, setGame] = useState<Game | null>(null);
   const newGame = useCallback(() => {
+    const newPlayers = Array.from(
+      new Array(setting.playerCount),
+      () => `${Math.random()}`
+    );
+
+    setPlayers(newPlayers);
+
     setGame(
       new Game({
         size: setting.gameSize,
-        players: Array.from(new Array(setting.playerCount), () => `${Math.random()}`),
+        players: newPlayers,
       })
     );
   }, [setting, setGame]);
 
   return (
-    <GameContext.Provider value={{ setting, changeSetting, game, newGame }}>
+    <GameContext.Provider
+      value={{ setting, changeSetting, game, newGame, players }}
+    >
       {children}
     </GameContext.Provider>
   );
