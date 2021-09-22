@@ -46,4 +46,14 @@ export class PlayerManager {
   getPlayers(): Player[] {
     return Object.values(this.players);
   }
+
+  removePin({ pin, player }: { pin: Pin; player: string }): boolean {
+    if (!this.players[player].pieces[pin]) {
+      return false;
+    }
+
+    this.players[player].pieces[pin]--;
+
+    return true;
+  }
 }
