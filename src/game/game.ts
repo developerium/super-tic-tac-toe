@@ -1,5 +1,5 @@
 import { generateBySize, Pin, TileRow, Location } from './tile/tile';
-import { WinDetector, WinnerResult } from './winner/win-detector';
+import { WinDetector, WinnerResult } from './win-detector/win-detector';
 
 interface GameConstructorInput {
   size: number;
