@@ -1,7 +1,7 @@
 import { generateBySize, Pin, TileRow, Location } from './tile/tile';
 import { WinDetector, WinnerResult } from './win-detector/win-detector';
 
-interface GameConstructorInput {
+interface GameConstructor {
   size: number;
   players: string[];
   tiles?: TileRow[];
@@ -30,7 +30,7 @@ export class Game {
     return this.players[this.playerIndex];
   }
 
-  constructor({ size, players, tiles }: GameConstructorInput) {
+  constructor({ size, players, tiles }: GameConstructor) {
     this.players = players;
     this.tiles = tiles || generateBySize(size);
     this.winDetector = new WinDetector({ size });
