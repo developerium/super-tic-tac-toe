@@ -56,4 +56,8 @@ export class PlayerManager {
 
     return true;
   }
+
+  getPlayer(playerId: string): Player | undefined {
+    return this.players[playerId];
+  }
 }

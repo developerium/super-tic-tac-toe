@@ -42,4 +42,16 @@ describe('PlayerManager', () => {
       );
     });
   });
+
+  describe('getPlayer', () => {
+    it('will give player back by id', () => {
+      const manager = new PlayerManager({ ids: playerIds });
+
+      expect(manager.getPlayer(playerIds[0])).toMatchObject({
+        id: playerIds[0],
+      });
+
+      expect(manager.getPlayer('bad id')).toBeUndefined();
+    });
+  });
 });
