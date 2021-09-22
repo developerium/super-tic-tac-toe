@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { Player } from '../game-context/GameContext';
+import { Player } from '../../game/player-manager/player-manager';
 
 interface PlayerAvatarProps {
   selected?: boolean;

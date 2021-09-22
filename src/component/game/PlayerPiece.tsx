@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 
-import { Player } from '../game-context/GameContext';
+import { Player } from '../../game/player-manager/player-manager';
 import { Pin } from '../../game/tile/tile';
 
 interface PlayerPieceProps {

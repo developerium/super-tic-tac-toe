@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   BeforeCapture,
@@ -39,8 +39,10 @@ const PlayerContent = styled.div`
 `;
 
 export const GamePage: FC = () => {
-  const { game, newGame, players } = useContext(GameContext);
+  const { game, newGame, playerManager } = useContext(GameContext);
+  const [refreshCounter, setRefreshCounter] = useState(0);
   const nextPlayer = game?.nextPlayer;
+  const players = playerManager?.getPlayers() || [];
 
   useEffect(() => {
     newGame?.();
@@ -72,6 +74,10 @@ export const GamePage: FC = () => {
   const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
     console.log('onDragEnd', { result, provided });
 
+    if (!game || !playerManager || !nextPlayer) {
+      return;
+    }
+
     const pin: Pin = result.source.index;
     const destination = result.destination?.droppableId;
 
@@ -80,14 +86,21 @@ export const GamePage: FC = () => {
       return;
     }
 
-    const [x, y] = destination.split('-');
+    const [xRaw, yRaw] = destination.split('-');
+    const x = parseInt(xRaw, 10);
+    const y = parseInt(yRaw, 10);
 
+    if (!game.validate({ x, y, pin })) {
+      console.log('invalid move');
+    }
 
-    game.createMove({
-      x: parseInt(x, 10),
-      y: parseInt(y, 10),
-      pin,
-    });
+    if (!playerManager.removePin({ pin, player: nextPlayer })) {
+      console.log('unable to remove pin');
+    }
+
+    game.createMove({ x, y, pin });
+
+    setRefreshCounter(refreshCounter + 1);
   };
 
   return (
@@ -104,7 +117,7 @@ export const GamePage: FC = () => {
             {players.map((player) => (
               <PlayerAvatar
                 key={player.id}
-                selected={player.id === game?.nextPlayer}
+                selected={player.id === nextPlayer}
                 player={player}
               />
             ))}

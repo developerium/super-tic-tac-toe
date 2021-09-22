@@ -57,7 +57,11 @@ export class PlayerManager {
     return true;
   }
 
-  getPlayer(playerId: string): Player | undefined {
+  getPlayer(playerId?: string): Player | undefined {
+    if (!playerId) {
+      return undefined;
+    }
+
     return this.players[playerId];
   }
 }

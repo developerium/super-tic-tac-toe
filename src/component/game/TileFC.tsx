@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
 
 import { Tile } from '../../game/tile/tile';
-import { GameContext, Player } from '../game-context/GameContext';
+import { GameContext } from '../game-context/GameContext';
 import { PlayerAvatar } from './PlayerAvatar';
+import { Player } from '../../game/player-manager/player-manager';
 
 interface TileProps {
   tile: Tile | null;
@@ -23,10 +24,9 @@ const Box = styled.div`
 `;
 
 export const TileFC: FC<TileProps> = ({ tile, y, x, placeholder }) => {
-  const { players } = useContext(GameContext);
+  const { playerManager } = useContext(GameContext);
 
-  const player: "" | undefined | Player =
-    tile?.player && players.find((p) => p.id === tile.player);
+  const player: undefined | Player = playerManager?.getPlayer(tile?.player);
 
   return (
     <Droppable droppableId={`${x}-${y}`} type="piece">
