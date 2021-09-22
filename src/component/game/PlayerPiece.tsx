@@ -11,7 +11,7 @@ interface PlayerPieceProps {
 
 interface PieceProps {
   draggableId: string;
-  draggableIndex: number;
+  draggableIndex: Pin;
 }
 
 const Large = styled.h3``;

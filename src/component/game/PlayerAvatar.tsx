@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Player } from '../game-context/GameContext';
 
 interface PlayerAvatarProps {
-  selected: boolean;
+  selected?: boolean;
   player: Player;
 }
 
@@ -23,7 +23,10 @@ const Container = styled.div<ContainerProps>`
 
 const Icon = styled.span``;
 
-export const PlayerAvatar: FC<PlayerAvatarProps> = ({ selected, player }) => (
+export const PlayerAvatar: FC<PlayerAvatarProps> = ({
+  selected = false,
+  player,
+}) => (
   <Container selected={selected}>
     <Icon className={`nes-text ${player.cssClass}`}>P{player.index + 1}</Icon>
   </Container>

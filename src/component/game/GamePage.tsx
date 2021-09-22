@@ -15,6 +15,7 @@ import { PageLayout } from '../layout/PageLayout';
 import { TileRowFC } from './TileRowFC';
 import { PlayerAvatar } from './PlayerAvatar';
 import { PlayerPiece } from './PlayerPiece';
+import { Pin } from '../../game/tile/tile';
 
 const Content = styled.div`
   height: 100%;
@@ -39,6 +40,7 @@ const PlayerContent = styled.div`
 
 export const GamePage: FC = () => {
   const { game, newGame, players } = useContext(GameContext);
+  const nextPlayer = game?.nextPlayer;
 
   useEffect(() => {
     newGame?.();
@@ -70,14 +72,16 @@ export const GamePage: FC = () => {
   const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
     console.log('onDragEnd', { result, provided });
 
-    const pin = result.source.index;
+    const pin: Pin = result.source.index;
     const destination = result.destination?.droppableId;
 
     if (!destination) {
       console.log('no destination tile found');
       return;
     }
+
     const [x, y] = destination.split('-');
+
 
     game.createMove({
       x: parseInt(x, 10),
@@ -117,7 +121,7 @@ export const GamePage: FC = () => {
               >
                 <PlayerContent>
                   {players.map((player) =>
-                    player.id === game?.nextPlayer ? (
+                    player.id === nextPlayer ? (
                       <PlayerPiece key={player.id} player={player} />
                     ) : null
                   )}
