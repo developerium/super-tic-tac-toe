@@ -56,19 +56,34 @@ export const GamePage: FC = () => {
   }
 
   const onBeforeCapture = (before: BeforeCapture) => {
-    console.log('onBeforeCapture', before);
+    console.log('onBeforeCapture', { before });
   };
   const onBeforeDragStart = (initial: DragStart) => {
-    console.log('onBeforeDragStart', initial);
+    console.log('onBeforeDragStart', { initial });
   };
   const onDragStart = (initial: DragStart, provided: ResponderProvided) => {
-    console.log('onDragStart', initial, provided);
+    console.log('onDragStart', { initial, provided });
   };
   const onDragUpdate = (initial: DragUpdate, provided: ResponderProvided) => {
-    console.log('onDragUpdate', initial, provided);
+    console.log('onDragUpdate', { initial, provided });
   };
   const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
-    console.log('onDragEnd', result, provided);
+    console.log('onDragEnd', { result, provided });
+
+    const pin = result.source.index;
+    const destination = result.destination?.droppableId;
+
+    if (!destination) {
+      console.log('no destination tile found');
+      return;
+    }
+    const [x, y] = destination.split('-');
+
+    game.createMove({
+      x: parseInt(x, 10),
+      y: parseInt(y, 10),
+      pin,
+    });
   };
 
   return (
@@ -91,7 +106,7 @@ export const GamePage: FC = () => {
             ))}
           </PlayerContent>
 
-          <Droppable droppableId="droppable-1" type="PERSON">
+          <Droppable droppableId="playerPiece" type="piece">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
@@ -107,15 +122,20 @@ export const GamePage: FC = () => {
                     ) : null
                   )}
                 </PlayerContent>
+
+                <TileContent>
+                  {game.getTiles().map((tileRow, index) => (
+                    <TileRowFC
+                      row={tileRow}
+                      x={index}
+                      key={index}
+                      placeholder={provided.placeholder}
+                    />
+                  ))}
+                </TileContent>
               </div>
             )}
           </Droppable>
-
-          <TileContent>
-            {game.getTiles().map((tileRow, index) => (
-              <TileRowFC row={tileRow} x={index} key={index} />
-            ))}
-          </TileContent>
         </DragDropContext>
       </Content>
     </PageLayout>
