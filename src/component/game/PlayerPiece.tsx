@@ -1,51 +1,42 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Draggable } from 'react-beautiful-dnd';
-
-import { Player } from '../../game/player-manager/player-manager';
 import { Pin } from '../../game/tile/tile';
 
+const BasePiece = styled.div`
+  border-radius: 50%;
+  background-color: red;
+  width: 30px;
+  height: 30px;
+`;
+
+const SmallPiece = styled(BasePiece)`
+  width: 30px;
+  height: 30px;
+`;
+
+const MediumPiece = styled(BasePiece)`
+  width: 60px;
+  height: 60px;
+`;
+
+const LargePiece = styled(BasePiece)`
+  width: 90px;
+  height: 90px;
+`;
+
 interface PlayerPieceProps {
-  player: Player;
+  pin: Pin;
 }
 
-interface PieceProps {
-  draggableId: string;
-  draggableIndex: Pin;
-}
-
-const Large = styled.h3``;
-const Medium = styled.h4``;
-const Small = styled.h5``;
-
-const Piece: FC<PieceProps> = ({ children, draggableId, draggableIndex }) => (
-  <Draggable draggableId={draggableId} index={draggableIndex}>
-    {(provided, snapshot) => (
-      <div
-        ref={provided.innerRef}
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}
-      >
-        {children}
-      </div>
-    )}
-  </Draggable>
-);
-
-export const PlayerPiece: FC<PlayerPieceProps> = ({ player }) => {
-  return (
-    <div className={`nes-text ${player.cssClass}`}>
-      <Piece draggableId="draggable-1" draggableIndex={Pin.Large}>
-        <Large>large: {player.pieces[Pin.Large]}</Large>
-      </Piece>
-
-      <Piece draggableId="draggable-2" draggableIndex={Pin.Medium}>
-        <Medium>medium: {player.pieces[Pin.Medium]}</Medium>
-      </Piece>
-
-      <Piece draggableId="draggable-3" draggableIndex={Pin.Small}>
-        <Small>small: {player.pieces[Pin.Small]}</Small>
-      </Piece>
-    </div>
-  );
+export const PlayerPiece: FC<PlayerPieceProps> = ({ pin, children }) => {
+  switch (pin) {
+  case Pin.Small:
+    return <SmallPiece>{children}</SmallPiece>;
+  case Pin.Medium:
+    return <MediumPiece>{children}</MediumPiece>;
+  case Pin.Large:
+    return <LargePiece>{children}</LargePiece>;
+  default:
+    return <div>unknown pin received</div>;
+  }
 };

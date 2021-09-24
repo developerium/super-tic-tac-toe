@@ -14,7 +14,7 @@ import { GameContext } from '../game-context/GameContext';
 import { PageLayout } from '../layout/PageLayout';
 import { TileRowFC } from './TileRowFC';
 import { PlayerAvatar } from './PlayerAvatar';
-import { PlayerPiece } from './PlayerPiece';
+import { PlayerPieceHolder } from './PlayerPieceHolder';
 import { Pin } from '../../game/tile/tile';
 
 const Content = styled.div`
@@ -135,7 +135,7 @@ export const GamePage: FC = () => {
                 <PlayerContent>
                   {players.map((player) =>
                     player.id === nextPlayer ? (
-                      <PlayerPiece key={player.id} player={player} />
+                      <PlayerPieceHolder key={player.id} player={player} />
                     ) : null
                   )}
                 </PlayerContent>
