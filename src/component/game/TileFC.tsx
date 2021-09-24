@@ -6,6 +6,7 @@ import { Tile } from '../../game/tile/tile';
 import { GameContext } from '../game-context/GameContext';
 import { PlayerAvatar } from './PlayerAvatar';
 import { Player } from '../../game/player-manager/player-manager';
+import { PlayerPiece } from './PlayerPiece';
 
 interface TileProps {
   tile: Tile | null;
@@ -16,8 +17,8 @@ interface TileProps {
 
 const Box = styled.div`
   border: 1px dashed gray;
-  width: 90px;
-  height: 90px;
+  width: 120px;
+  height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,10 +32,22 @@ export const TileFC: FC<TileProps> = ({ tile, y, x, placeholder }) => {
   return (
     <Droppable droppableId={`${x}-${y}`} type="piece">
       {(provided, snapshot) => (
-        <Box ref={provided.innerRef} {...provided.droppableProps}>
-          {x},{y}
+        <Box
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          style={ snapshot.isDraggingOver ? { backgroundColor: 'blue' } : undefined}
+        >
+          {!player && (
+            <div>
+              {x},{y}
+            </div>
+          )}
+          {player && typeof tile?.pin !== 'undefined' && (
+            <PlayerPiece pin={tile?.pin} className={player.cssClass}>
+              <PlayerAvatar index={player.index} className={''} />
+            </PlayerPiece>
+          )}
           {placeholder}
-          {player && <PlayerAvatar player={player} />}
         </Box>
       )}
     </Droppable>

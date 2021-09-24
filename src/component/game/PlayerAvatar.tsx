@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { Player } from '../../game/player-manager/player-manager';
-
 interface PlayerAvatarProps {
   selected?: boolean;
-  player: Player;
+  index: number;
+  className: string;
 }
 
 interface ContainerProps {
@@ -25,9 +24,10 @@ const Icon = styled.span``;
 
 export const PlayerAvatar: FC<PlayerAvatarProps> = ({
   selected = false,
-  player,
+  className,
+  index
 }) => (
   <Container selected={selected}>
-    <Icon className={`nes-text ${player.cssClass}`}>P{player.index + 1}</Icon>
+    <Icon className={`nes-text ${className}`}>P{index + 1}</Icon>
   </Container>
 );

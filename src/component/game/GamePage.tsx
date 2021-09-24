@@ -21,7 +21,7 @@ const Content = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
 const TileContent = styled.div`
@@ -48,7 +48,7 @@ export const GamePage: FC = () => {
     newGame?.();
   }, []);
 
-  if (!game) {
+  if (!game || !playerManager || !nextPlayer) {
     return (
       <PageLayout title="Loading ...">
         <div>
@@ -74,10 +74,6 @@ export const GamePage: FC = () => {
   const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
     console.log('onDragEnd', { result, provided });
 
-    if (!game || !playerManager || !nextPlayer) {
-      return;
-    }
-
     const pin: Pin = result.source.index;
     const destination = result.destination?.droppableId;
 
@@ -90,12 +86,14 @@ export const GamePage: FC = () => {
     const x = parseInt(xRaw, 10);
     const y = parseInt(yRaw, 10);
 
-    if (!game.validate({ x, y, pin })) {
+    if (isNaN(x) || isNaN(y) || !game.validate({ x, y, pin })) {
       console.log('invalid move');
+      return;
     }
 
     if (!playerManager.removePin({ pin, player: nextPlayer })) {
       console.log('unable to remove pin');
+      return;
     }
 
     game.createMove({ x, y, pin });
@@ -118,18 +116,16 @@ export const GamePage: FC = () => {
               <PlayerAvatar
                 key={player.id}
                 selected={player.id === nextPlayer}
-                player={player}
+                className={player.cssClass}
+                index={player.index}
               />
             ))}
           </PlayerContent>
 
           <Droppable droppableId="playerPiece" type="piece">
             {(provided, snapshot) => (
-              <div
+              <Content
                 ref={provided.innerRef}
-                style={{
-                  backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey',
-                }}
                 {...provided.droppableProps}
               >
                 <PlayerContent>
@@ -150,7 +146,7 @@ export const GamePage: FC = () => {
                     />
                   ))}
                 </TileContent>
-              </div>
+              </Content>
             )}
           </Droppable>
         </DragDropContext>

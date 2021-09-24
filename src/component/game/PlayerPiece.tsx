@@ -7,7 +7,6 @@ const BasePiece = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: red;
 `;
 
 const SmallPiece = styled(BasePiece)`
@@ -21,8 +20,8 @@ const MediumPiece = styled(BasePiece)`
 `;
 
 const LargePiece = styled(BasePiece)`
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
 `;
 
 interface PlayerPieceProps {
