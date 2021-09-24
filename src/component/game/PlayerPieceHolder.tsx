@@ -15,6 +15,14 @@ interface PieceProps {
   draggableIndex: Pin;
 }
 
+const Root = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+`;
+
 const Large = styled.h3``;
 const Medium = styled.h4``;
 const Small = styled.h5``;
@@ -37,28 +45,30 @@ const DraggablePiece: FC<PieceProps> = ({
   </Draggable>
 );
 
-export const PlayerPieceHolder: FC<PlayerPieceProps> = ({ player }) => {
-  return (
-    <div className={`nes-text ${player.cssClass}`}>
+export const PlayerPieceHolder: FC<PlayerPieceProps> = ({ player }) => (
+  <Root>
+    {player.pieces[Pin.Large] > 0 && (
       <DraggablePiece draggableId="draggable-1" draggableIndex={Pin.Large}>
-        <Large>
-          <PlayerPiece pin={Pin.Large}>{player.pieces[Pin.Large]}x</PlayerPiece>
-        </Large>
+        <PlayerPiece pin={Pin.Large} className={player.cssClass}>
+          <Large>{player.pieces[Pin.Large]}x</Large>
+        </PlayerPiece>
       </DraggablePiece>
+    )}
 
+    {player.pieces[Pin.Medium] > 0 && (
       <DraggablePiece draggableId="draggable-2" draggableIndex={Pin.Medium}>
-        <Medium>
-          <PlayerPiece pin={Pin.Medium}>
-            {player.pieces[Pin.Medium]}x
-          </PlayerPiece>
-        </Medium>
+        <PlayerPiece pin={Pin.Medium} className={player.cssClass}>
+          <Medium>{player.pieces[Pin.Medium]}x</Medium>
+        </PlayerPiece>
       </DraggablePiece>
+    )}
 
+    {player.pieces[Pin.Small] > 0 && (
       <DraggablePiece draggableId="draggable-3" draggableIndex={Pin.Small}>
-        <Small>
-          <PlayerPiece pin={Pin.Small}>{player.pieces[Pin.Small]}x</PlayerPiece>
-        </Small>
+        <PlayerPiece pin={Pin.Small} className={player.cssClass}>
+          <Small>{player.pieces[Pin.Small]}x</Small>
+        </PlayerPiece>
       </DraggablePiece>
-    </div>
-  );
-};
+    )}
+  </Root>
+);
