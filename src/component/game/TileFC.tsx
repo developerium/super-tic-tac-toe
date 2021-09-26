@@ -12,7 +12,6 @@ interface TileProps {
   tile: Tile | null;
   x: number;
   y: number;
-  placeholder?: React.ReactElement<HTMLElement> | null | undefined;
 }
 
 const Box = styled.div`
@@ -24,18 +23,20 @@ const Box = styled.div`
   justify-content: center;
 `;
 
-export const TileFC: FC<TileProps> = ({ tile, y, x, placeholder }) => {
+export const TileFC: FC<TileProps> = ({ tile, y, x }) => {
   const { playerManager } = useContext(GameContext);
 
   const player: undefined | Player = playerManager?.getPlayer(tile?.player);
 
   return (
-    <Droppable droppableId={`${x}-${y}`} type="piece">
+    <Droppable droppableId={`${x}-${y}`}>
       {(provided, snapshot) => (
         <Box
           ref={provided.innerRef}
           {...provided.droppableProps}
-          style={ snapshot.isDraggingOver ? { backgroundColor: 'blue' } : undefined}
+          style={
+            snapshot.isDraggingOver ? { backgroundColor: 'blue' } : undefined
+          }
         >
           {!player && (
             <div>
@@ -47,7 +48,6 @@ export const TileFC: FC<TileProps> = ({ tile, y, x, placeholder }) => {
               <PlayerAvatar index={player.index} className={''} />
             </PlayerPiece>
           )}
-          {placeholder}
         </Box>
       )}
     </Droppable>

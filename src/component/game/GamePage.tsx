@@ -122,12 +122,9 @@ export const GamePage: FC = () => {
             ))}
           </PlayerContent>
 
-          <Droppable droppableId="playerPiece" type="piece">
-            {(provided, snapshot) => (
-              <Content
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
+          <Droppable droppableId="playerPiece" isDropDisabled>
+            {(provided) => (
+              <Content ref={provided.innerRef} {...provided.droppableProps}>
                 <PlayerContent>
                   {players.map((player) =>
                     player.id === nextPlayer ? (
@@ -135,20 +132,16 @@ export const GamePage: FC = () => {
                     ) : null
                   )}
                 </PlayerContent>
-
-                <TileContent>
-                  {game.getTiles().map((tileRow, index) => (
-                    <TileRowFC
-                      row={tileRow}
-                      x={index}
-                      key={index}
-                      placeholder={provided.placeholder}
-                    />
-                  ))}
-                </TileContent>
+                {provided.placeholder}
               </Content>
             )}
           </Droppable>
+
+          <TileContent>
+            {game.getTiles().map((tileRow, index) => (
+              <TileRowFC row={tileRow} x={index} key={index} />
+            ))}
+          </TileContent>
         </DragDropContext>
       </Content>
     </PageLayout>

@@ -7,7 +7,6 @@ import { TileFC } from './TileFC';
 interface TileRowProps {
   row: TileRow;
   x: number;
-  placeholder?: React.ReactElement<HTMLElement> | null | undefined;
 }
 
 const Row = styled.div`
@@ -15,16 +14,10 @@ const Row = styled.div`
   flex-direction: row;
 `;
 
-export const TileRowFC: FC<TileRowProps> = ({ row, x, placeholder }) => (
+export const TileRowFC: FC<TileRowProps> = ({ row, x }) => (
   <Row>
     {row.map((tile, y) => (
-      <TileFC
-        tile={tile}
-        y={y}
-        x={x}
-        key={`${x}-${y}`}
-        placeholder={placeholder}
-      />
+      <TileFC tile={tile} y={y} x={x} key={`${x}-${y}`} />
     ))}
   </Row>
 );

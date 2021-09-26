@@ -33,7 +33,7 @@ const DraggablePiece: FC<PieceProps> = ({
   draggableIndex,
 }) => (
   <Draggable draggableId={draggableId} index={draggableIndex}>
-    {(provided, snapshot) => (
+    {(provided) => (
       <div
         ref={provided.innerRef}
         {...provided.draggableProps}
