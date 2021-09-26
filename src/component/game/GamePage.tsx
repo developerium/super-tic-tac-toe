@@ -1,22 +1,13 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
-import {
-  BeforeCapture,
-  DragDropContext,
-  DragStart,
-  DragUpdate,
-  Droppable,
-  DropResult,
-  ResponderProvided,
-} from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import { GameContext } from '../game-context/GameContext';
 import { PageLayout } from '../layout/PageLayout';
 import { TileRowFC } from './TileRowFC';
 import { PlayerAvatar } from './PlayerAvatar';
 import { PlayerPieceHolder } from './PlayerPieceHolder';
-import { Pin } from '../../game/tile/tile';
 import { HiddenDiv } from './HiddenDiv';
+import { useGamePage } from './useGamePage';
 
 const Content = styled.div`
   height: 100%;
@@ -41,14 +32,15 @@ const VerticalContent = styled.div`
 `;
 
 export const GamePage: FC = () => {
-  const { game, newGame, playerManager } = useContext(GameContext);
-  const [refreshCounter, setRefreshCounter] = useState(0);
-  const nextPlayer = game?.nextPlayer;
-  const players = playerManager?.getPlayers() || [];
-
-  useEffect(() => {
-    newGame?.();
-  }, []);
+  const {
+    game,
+    playerManager,
+    nextPlayer,
+    players,
+    onDragEnd,
+    onReset,
+    gameWinner,
+  } = useGamePage();
 
   if (!game || !playerManager || !nextPlayer) {
     return (
@@ -61,58 +53,12 @@ export const GamePage: FC = () => {
     );
   }
 
-  const onBeforeCapture = (before: BeforeCapture) => {
-    console.log('onBeforeCapture', { before });
-  };
-  const onBeforeDragStart = (initial: DragStart) => {
-    console.log('onBeforeDragStart', { initial });
-  };
-  const onDragStart = (initial: DragStart, provided: ResponderProvided) => {
-    console.log('onDragStart', { initial, provided });
-  };
-  const onDragUpdate = (initial: DragUpdate, provided: ResponderProvided) => {
-    console.log('onDragUpdate', { initial, provided });
-  };
-  const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
-    console.log('onDragEnd', { result, provided });
-
-    const pin: Pin = result.source.index;
-    const destination = result.destination?.droppableId;
-
-    if (!destination) {
-      console.log('no destination tile found');
-      return;
-    }
-
-    const [xRaw, yRaw] = destination.split('-');
-    const x = parseInt(xRaw, 10);
-    const y = parseInt(yRaw, 10);
-
-    if (isNaN(x) || isNaN(y) || !game.validate({ x, y, pin })) {
-      console.log('invalid move');
-      return;
-    }
-
-    if (!playerManager.removePin({ pin, player: nextPlayer })) {
-      console.log('unable to remove pin');
-      return;
-    }
-
-    game.createMove({ x, y, pin });
-
-    setRefreshCounter(refreshCounter + 1);
-  };
+  console.log(gameWinner);
 
   return (
     <PageLayout title="Tic Tac Toe" isGameLayout>
       <Content>
-        <DragDropContext
-          onBeforeCapture={onBeforeCapture}
-          onBeforeDragStart={onBeforeDragStart}
-          onDragStart={onDragStart}
-          onDragUpdate={onDragUpdate}
-          onDragEnd={onDragEnd}
-        >
+        <DragDropContext onDragEnd={onDragEnd}>
           <VerticalContent>
             {players.map((player) => (
               <PlayerAvatar
@@ -123,7 +69,9 @@ export const GamePage: FC = () => {
               />
             ))}
 
-            <button className="nes-btn">reset</button>
+            <button className="nes-btn" onClick={onReset}>
+              reset
+            </button>
           </VerticalContent>
 
           <Droppable droppableId="playerPieces" isDropDisabled>
