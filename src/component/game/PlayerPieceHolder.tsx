@@ -26,7 +26,7 @@ const Root = styled.div`
 
 const Large = styled.h3``;
 const Medium = styled.h4``;
-const Small = styled.h5``;
+const Small = styled.h6``;
 
 const DraggablePiece: FC<PieceProps> = ({
   children,
@@ -51,7 +51,7 @@ export const PlayerPieceHolder: FC<PlayerPieceProps> = ({ player }) => (
     {player.pieces[Pin.Large] > 0 && (
       <DraggablePiece draggableId="draggable-1" draggableIndex={Pin.Large}>
         <PlayerPiece pin={Pin.Large} className={player.cssClass}>
-          <Large>{player.pieces[Pin.Large]}x</Large>
+          <Large>Lx{player.pieces[Pin.Large]}</Large>
         </PlayerPiece>
       </DraggablePiece>
     )}
@@ -59,7 +59,7 @@ export const PlayerPieceHolder: FC<PlayerPieceProps> = ({ player }) => (
     {player.pieces[Pin.Medium] > 0 && (
       <DraggablePiece draggableId="draggable-2" draggableIndex={Pin.Medium}>
         <PlayerPiece pin={Pin.Medium} className={player.cssClass}>
-          <Medium>{player.pieces[Pin.Medium]}x</Medium>
+          <Medium>Mx{player.pieces[Pin.Medium]}</Medium>
         </PlayerPiece>
       </DraggablePiece>
     )}
@@ -67,7 +67,7 @@ export const PlayerPieceHolder: FC<PlayerPieceProps> = ({ player }) => (
     {player.pieces[Pin.Small] > 0 && (
       <DraggablePiece draggableId="draggable-3" draggableIndex={Pin.Small}>
         <PlayerPiece pin={Pin.Small} className={player.cssClass}>
-          <Small>{player.pieces[Pin.Small]}x</Small>
+          <Small>Sx{player.pieces[Pin.Small]}</Small>
         </PlayerPiece>
       </DraggablePiece>
     )}
