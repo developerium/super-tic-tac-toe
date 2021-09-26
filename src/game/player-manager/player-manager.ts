@@ -16,10 +16,10 @@ export interface Player {
 }
 
 const playerClasses = [
-  'is-success',
-  'is-warning',
-  'is-error',
   'is-primary',
+  'is-warning',
+  'is-success',
+  'is-error',
   'is-disabled',
 ];
 
