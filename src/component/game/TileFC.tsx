@@ -2,9 +2,8 @@ import React, { FC, useContext } from 'react';
 import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
 
-import { Tile } from '../../game/tile/tile';
+import { Pin, Tile } from '../../game/tile/tile';
 import { GameContext } from '../game-context/GameContext';
-import { PlayerAvatar } from './PlayerAvatar';
 import { Player } from '../../game/player-manager/player-manager';
 import { PlayerPiece } from './PlayerPiece';
 
@@ -15,13 +14,26 @@ interface TileProps {
 }
 
 const Box = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 1px dashed gray;
   width: 120px;
   height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 `;
+
+const getPinSymbol = (pin: Pin) => {
+  switch (pin) {
+  case Pin.Small:
+    return 'S';
+  case Pin.Medium:
+    return 'M';
+  case Pin.Large:
+    return 'L';
+  default:
+    return 'unknown';
+  }
+};
 
 export const TileFC: FC<TileProps> = ({ tile, y, x }) => {
   const { playerManager } = useContext(GameContext);
@@ -39,13 +51,11 @@ export const TileFC: FC<TileProps> = ({ tile, y, x }) => {
           }
         >
           {!player && (
-            <div>
-              {x},{y}
-            </div>
+            <div />
           )}
           {player && typeof tile?.pin !== 'undefined' && (
-            <PlayerPiece pin={tile?.pin} className={player.cssClass}>
-              <PlayerAvatar index={player.index} className={''} />
+            <PlayerPiece pin={tile.pin} className={player.cssClass}>
+              {getPinSymbol(tile.pin)}
             </PlayerPiece>
           )}
         </Box>
