@@ -16,7 +16,7 @@ const SelectWrapper = styled.div`
 `;
 
 export const GameSettingPage: FC = () => {
-  const { setting, changeSetting } = useContext(GameContext);
+  const { setting, changeSetting, newGame } = useContext(GameContext);
 
   const onChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const { name, value } = event.target;
@@ -59,7 +59,7 @@ export const GameSettingPage: FC = () => {
         </SelectWrapper>
       </Content>
 
-      <Link to="/game" className="nes-btn is-primary">
+      <Link to="/game" className="nes-btn is-primary" onClick={newGame}>
         Play !
       </Link>
     </PageLayout>

@@ -21,7 +21,10 @@ export const useGamePage = () => {
   // };
 
   useEffect(() => {
-    newGame?.();
+    // if this page is opened directly
+    if (!game && newGame) {
+      newGame();
+    }
   }, []);
 
   const onDragEnd = (result: DropResult, provided: ResponderProvided) => {

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { Link } from 'react-router-dom';
 
 import { PageLayout } from '../layout/PageLayout';
 import { TileRowFC } from './TileRowFC';
@@ -68,9 +69,15 @@ export const GamePage: FC = () => {
               />
             ))}
 
-            <button className="nes-btn" onClick={newGame}>
-              reset
-            </button>
+            <div>
+              <button className="nes-btn" onClick={newGame}>
+                reset
+              </button>
+              &nbsp;
+              <Link to="/game-setting" className="nes-btn">
+                setting
+              </Link>
+            </div>
           </VerticalContent>
 
           <Droppable droppableId="playerPieces" isDropDisabled>
