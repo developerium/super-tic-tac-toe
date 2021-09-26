@@ -5,9 +5,9 @@ interface PageProps {
   title?: string;
 }
 
-const Padd = styled.div`
+const Root = styled.div`
   padding: 8px;
-  height: 100%;
+  height: 98%;
 `;
 
 const Content = styled.div`
@@ -17,11 +17,11 @@ const Content = styled.div`
 `;
 
 export const PageLayout: FC<PageProps> = ({ title, children }) => (
-  <Padd>
+  <Root>
     <Content className="nes-container with-title is-centered is-rounded">
       <p className="title">{title}</p>
 
       {children}
     </Content>
-  </Padd>
+  </Root>
 );
