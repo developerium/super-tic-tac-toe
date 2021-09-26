@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface PlayerAvatarProps {
   selected?: boolean;
-  index: number;
+  name: string;
   className: string;
 }
 
@@ -25,9 +25,9 @@ const Icon = styled.span``;
 export const PlayerAvatar: FC<PlayerAvatarProps> = ({
   selected = false,
   className,
-  index
+  name
 }) => (
   <Container selected={selected}>
-    <Icon className={`nes-text ${className}`}>P{index + 1}</Icon>
+    <Icon className={`nes-text ${className}`}>{name}</Icon>
   </Container>
 );

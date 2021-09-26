@@ -6,8 +6,8 @@ interface PlayerManagerConstructor {
 
 export interface Player {
   id: string;
+  name: string;
   cssClass: string;
-  index: number;
   pieces: {
     [Pin.Small]: number;
     [Pin.Medium]: number;
@@ -23,9 +23,9 @@ const playerClasses = [
   'is-disabled',
 ];
 
-const getInitialParams = ({ id, index }: { id: string; index: number }) => ({
+const getInitialParams = ({ id, index }: { id: string; index: number }): Player => ({
   id,
-  index: index + 1,
+  name: `P${index + 1}`,
   cssClass: playerClasses[index],
   pieces: {
     [Pin.Small]: 3,
