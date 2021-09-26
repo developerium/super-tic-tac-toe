@@ -105,7 +105,8 @@ export const GamePage: FC = () => {
       {!!gameWinner && (
         <WinnerDialog
           winner={
-            playerManager.getPlayer(gameWinner.player)?.name || gameWinner.player
+            playerManager.getPlayer(gameWinner.player)?.name ||
+            gameWinner.player
           }
           newGame={newGame}
         />
