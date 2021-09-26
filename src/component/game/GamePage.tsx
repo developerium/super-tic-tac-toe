@@ -53,8 +53,6 @@ export const GamePage: FC = () => {
     );
   }
 
-  console.log(gameWinner);
-
   return (
     <PageLayout title="Tic Tac Toe" isGameLayout>
       <Content>
@@ -92,7 +90,12 @@ export const GamePage: FC = () => {
 
           <TileContent>
             {game.getTiles().map((tileRow, index) => (
-              <TileRowFC row={tileRow} x={index} key={index} />
+              <TileRowFC
+                row={tileRow}
+                x={index}
+                key={index}
+                winnerLocations={gameWinner?.locations}
+              />
             ))}
           </TileContent>
         </DragDropContext>

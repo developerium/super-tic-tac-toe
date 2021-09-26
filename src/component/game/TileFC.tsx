@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
 
@@ -12,15 +12,29 @@ interface TileProps {
   tile: Tile | null;
   x: number;
   y: number;
+  isWinner?: boolean;
 }
 
-const Box = styled.div`
+interface BoxProps {
+  isDraggingOver?: boolean;
+  isWinner?: boolean;
+}
+
+const Box = styled.div<BoxProps>`
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px dashed gray;
   width: 120px;
   height: 120px;
+
+  ${({ isWinner }) =>
+    isWinner &&
+    `
+    background-color: #33eb91;
+    animation: blinker 1s step-start infinite;
+    `}
+  ${({ isDraggingOver }) => isDraggingOver && `background-color: #8561c5;`}
 `;
 
 const getPinSymbol = (pin: Pin) => {
@@ -36,11 +50,7 @@ const getPinSymbol = (pin: Pin) => {
   }
 };
 
-const dragOverStyle: CSSProperties = {
-  backgroundColor: '#33bfff',
-};
-
-export const TileFC: FC<TileProps> = ({ tile, y, x }) => {
+export const TileFC: FC<TileProps> = ({ tile, y, x, isWinner = false }) => {
   const { playerManager } = useContext(GameContext);
 
   const player: undefined | Player = playerManager?.getPlayer(tile?.player);
@@ -51,7 +61,8 @@ export const TileFC: FC<TileProps> = ({ tile, y, x }) => {
         <Box
           ref={provided.innerRef}
           {...provided.droppableProps}
-          style={snapshot.isDraggingOver ? dragOverStyle : undefined}
+          isDraggingOver={snapshot.isDraggingOver}
+          isWinner={isWinner}
         >
           {!player && <div />}
           {player && typeof tile?.pin !== 'undefined' && (
