@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { CSSProperties, FC, useContext } from 'react';
 import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
 
@@ -6,6 +6,7 @@ import { Pin, Tile } from '../../game/tile/tile';
 import { GameContext } from '../game-context/GameContext';
 import { Player } from '../../game/player-manager/player-manager';
 import { PlayerPiece } from './PlayerPiece';
+import { HiddenDiv } from './HiddenDiv';
 
 interface TileProps {
   tile: Tile | null;
@@ -35,6 +36,10 @@ const getPinSymbol = (pin: Pin) => {
   }
 };
 
+const dragOverStyle: CSSProperties = {
+  backgroundColor: '#33bfff',
+};
+
 export const TileFC: FC<TileProps> = ({ tile, y, x }) => {
   const { playerManager } = useContext(GameContext);
 
@@ -46,18 +51,15 @@ export const TileFC: FC<TileProps> = ({ tile, y, x }) => {
         <Box
           ref={provided.innerRef}
           {...provided.droppableProps}
-          style={
-            snapshot.isDraggingOver ? { backgroundColor: 'blue' } : undefined
-          }
+          style={snapshot.isDraggingOver ? dragOverStyle : undefined}
         >
-          {!player && (
-            <div />
-          )}
+          {!player && <div />}
           {player && typeof tile?.pin !== 'undefined' && (
             <PlayerPiece pin={tile.pin} className={player.cssClass}>
               {getPinSymbol(tile.pin)}
             </PlayerPiece>
           )}
+          <HiddenDiv>{provided.placeholder}</HiddenDiv>
         </Box>
       )}
     </Droppable>
