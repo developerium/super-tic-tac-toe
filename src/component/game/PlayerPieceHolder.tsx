@@ -21,6 +21,7 @@ const Root = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
+  height: 80px;
 `;
 
 const Large = styled.h3``;

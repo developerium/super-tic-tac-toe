@@ -16,6 +16,7 @@ import { TileRowFC } from './TileRowFC';
 import { PlayerAvatar } from './PlayerAvatar';
 import { PlayerPieceHolder } from './PlayerPieceHolder';
 import { Pin } from '../../game/tile/tile';
+import { HiddenDiv } from './HiddenDiv';
 
 const Content = styled.div`
   height: 100%;
@@ -31,11 +32,12 @@ const TileContent = styled.div`
   align-items: center;
 `;
 
-const PlayerContent = styled.div`
+const VerticalContent = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  padding: 16px 0;
 `;
 
 export const GamePage: FC = () => {
@@ -102,7 +104,7 @@ export const GamePage: FC = () => {
   };
 
   return (
-    <PageLayout title="TicTacToe">
+    <PageLayout title="Tic Tac Toe" isGameLayout>
       <Content>
         <DragDropContext
           onBeforeCapture={onBeforeCapture}
@@ -111,7 +113,7 @@ export const GamePage: FC = () => {
           onDragUpdate={onDragUpdate}
           onDragEnd={onDragEnd}
         >
-          <PlayerContent>
+          <VerticalContent>
             {players.map((player) => (
               <PlayerAvatar
                 key={player.id}
@@ -120,20 +122,21 @@ export const GamePage: FC = () => {
                 index={player.index}
               />
             ))}
-          </PlayerContent>
+          </VerticalContent>
 
-          <Droppable droppableId="playerPiece" isDropDisabled>
+          <Droppable droppableId="playerPieces" isDropDisabled>
             {(provided) => (
-              <Content ref={provided.innerRef} {...provided.droppableProps}>
-                <PlayerContent>
-                  {players.map((player) =>
-                    player.id === nextPlayer ? (
-                      <PlayerPieceHolder key={player.id} player={player} />
-                    ) : null
-                  )}
-                </PlayerContent>
-                {provided.placeholder}
-              </Content>
+              <VerticalContent
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {players.map((player) =>
+                  player.id === nextPlayer ? (
+                    <PlayerPieceHolder key={player.id} player={player} />
+                  ) : null
+                )}
+                <HiddenDiv>{provided.placeholder}</HiddenDiv>
+              </VerticalContent>
             )}
           </Droppable>
 

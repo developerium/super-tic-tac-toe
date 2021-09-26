@@ -3,11 +3,21 @@ import styled from 'styled-components';
 
 interface PageProps {
   title?: string;
+  isGameLayout?: boolean;
 }
 
-const Root = styled.div`
+interface RootProps {
+  isGameLayout?: boolean;
+}
+
+const Root = styled.div<RootProps>`
   padding: 8px;
-  height: 98%;
+
+  ${({ isGameLayout }) =>
+    !isGameLayout &&
+    `
+     height: 98%;
+  `}
 `;
 
 const Content = styled.div`
@@ -16,8 +26,8 @@ const Content = styled.div`
   height: 100%;
 `;
 
-export const PageLayout: FC<PageProps> = ({ title, children }) => (
-  <Root>
+export const PageLayout: FC<PageProps> = ({ title, isGameLayout, children }) => (
+  <Root isGameLayout={isGameLayout}>
     <Content className="nes-container with-title is-centered is-rounded">
       <p className="title">{title}</p>
 
