@@ -8,6 +8,7 @@ import { PlayerAvatar } from './PlayerAvatar';
 import { PlayerPieceHolder } from './PlayerPieceHolder';
 import { HiddenDiv } from './HiddenDiv';
 import { useGamePage } from './useGamePage';
+import { WinnerDialog } from './WinnerDialog';
 
 const Content = styled.div`
   height: 100%;
@@ -40,6 +41,7 @@ export const GamePage: FC = () => {
     onDragEnd,
     onReset,
     gameWinner,
+    newGame,
   } = useGamePage();
 
   if (!game || !playerManager || !nextPlayer) {
@@ -61,13 +63,13 @@ export const GamePage: FC = () => {
             {players.map((player) => (
               <PlayerAvatar
                 key={player.id}
-                selected={player.id === nextPlayer}
+                selected={!gameWinner && player.id === nextPlayer}
                 className={player.cssClass}
-                index={player.index}
+                name={player.name}
               />
             ))}
 
-            <button className="nes-btn" onClick={onReset}>
+            <button className="nes-btn" onClick={newGame}>
               reset
             </button>
           </VerticalContent>
@@ -100,6 +102,15 @@ export const GamePage: FC = () => {
           </TileContent>
         </DragDropContext>
       </Content>
+
+      {!!gameWinner && (
+        <WinnerDialog
+          winner={
+            playerManager.getPlayer(gameWinner.player)?.name || gameWinner.player
+          }
+          newGame={newGame}
+        />
+      )}
     </PageLayout>
   );
 };
