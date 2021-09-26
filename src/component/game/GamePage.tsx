@@ -122,6 +122,8 @@ export const GamePage: FC = () => {
                 index={player.index}
               />
             ))}
+
+            <button className="nes-btn">reset</button>
           </VerticalContent>
 
           <Droppable droppableId="playerPieces" isDropDisabled>
