@@ -39,7 +39,6 @@ export const GamePage: FC = () => {
     nextPlayer,
     players,
     onDragEnd,
-    onReset,
     gameWinner,
     newGame,
   } = useGamePage();

@@ -11,6 +11,14 @@ export const useGamePage = () => {
   const nextPlayer = game?.nextPlayer;
   const players = playerManager?.getPlayers() || [];
   const gameWinner = game?.getWinner();
+  // const gameWinner = {
+  //   player: players[0]?.id,
+  //   locations: [
+  //     { x: 0, y: 0 },
+  //     { x: 1, y: 1 },
+  //     { x: 2, y: 2 },
+  //   ],
+  // };
 
   useEffect(() => {
     newGame?.();
@@ -51,10 +59,6 @@ export const useGamePage = () => {
     setRefreshCounter(refreshCounter + 1);
   };
 
-  const onReset = () => {
-    console.log('handle on Reset!!');
-  };
-
   return {
     game,
     playerManager,
@@ -62,6 +66,6 @@ export const useGamePage = () => {
     players,
     onDragEnd,
     gameWinner,
-    onReset,
+    newGame,
   };
 };
