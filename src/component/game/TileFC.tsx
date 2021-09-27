@@ -20,6 +20,11 @@ interface BoxProps {
   isWinner?: boolean;
 }
 
+const FadedText = styled.div`
+  opacity: 0.2;
+  font-size: small;
+`;
+
 const Box = styled.div<BoxProps>`
   display: flex;
   justify-content: center;
@@ -64,12 +69,14 @@ export const TileFC: FC<TileProps> = ({ tile, y, x, isWinner = false }) => {
           isDraggingOver={snapshot.isDraggingOver}
           isWinner={isWinner}
         >
-          {!player && <div />}
+          {!player && <FadedText>{x+1}-{y+1}</FadedText>}
+
           {player && typeof tile?.pin !== 'undefined' && (
             <PlayerPiece pin={tile.pin} className={player.cssClass}>
               {getPinSymbol(tile.pin)}
             </PlayerPiece>
           )}
+
           <HiddenDiv>{provided.placeholder}</HiddenDiv>
         </Box>
       )}
