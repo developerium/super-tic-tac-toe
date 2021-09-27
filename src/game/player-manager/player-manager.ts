@@ -2,6 +2,7 @@ import { Pin } from '../tile/tile';
 
 interface PlayerManagerConstructor {
   ids: string[];
+  pieceCount?: number;
 }
 
 export interface Player {
@@ -23,23 +24,35 @@ const playerClasses = [
   'is-disabled',
 ];
 
-const getInitialParams = ({ id, index }: { id: string; index: number }): Player => ({
+const getInitialParams = ({
+  id,
+  index,
+  pieceCount,
+}: {
+  id: string;
+  index: number;
+  pieceCount: number;
+}): Player => ({
   id,
   name: `P${index + 1}`,
   cssClass: playerClasses[index],
   pieces: {
-    [Pin.Small]: 3,
-    [Pin.Medium]: 3,
-    [Pin.Large]: 3,
+    [Pin.Small]: pieceCount,
+    [Pin.Medium]: pieceCount,
+    [Pin.Large]: pieceCount,
   },
 });
 
 export class PlayerManager {
   private players: { [id: string]: Player } = {};
 
-  constructor({ ids }: PlayerManagerConstructor) {
+  constructor({ ids, pieceCount = 3 }: PlayerManagerConstructor) {
     ids.forEach((id, index) => {
-      this.players[id] = getInitialParams({ id, index });
+      this.players[id] = getInitialParams({
+        id,
+        index,
+        pieceCount,
+      });
     });
   }
 

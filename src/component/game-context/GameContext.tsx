@@ -51,7 +51,12 @@ export const GameContextProvider: FC = ({ children }) => {
       () => `${Math.random()}`
     );
 
-    setPlayerManager(new PlayerManager({ ids: newPlayers }));
+    setPlayerManager(
+      new PlayerManager({
+        ids: newPlayers,
+        pieceCount: setting.gameSize,
+      })
+    );
 
     setGame(
       new Game({
