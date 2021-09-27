@@ -8,12 +8,18 @@ interface WinnerDialogProps {
 }
 
 const StyledDialog = styled.dialog`
-  width: 100%;
-  top: 25%;
+  position: absolute;
+  width: 70%;
+  top: 20%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
 `;
 
 export const WinnerDialog: FC<WinnerDialogProps> = ({ winner, newGame }) => (
-  <StyledDialog className="nes-dialog" open>
+  <StyledDialog className="nes-dialog is-rounded" open>
     <form method="dialog">
       <p className="title">Game over</p>
       <p>{winner} is the winner!!</p>
