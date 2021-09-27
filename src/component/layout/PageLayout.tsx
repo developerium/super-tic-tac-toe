@@ -12,6 +12,8 @@ interface RootProps {
 
 const Root = styled.div<RootProps>`
   padding: 8px;
+  max-width: 900px;
+  margin: auto;
 
   ${({ isGameLayout }) =>
     !isGameLayout &&
